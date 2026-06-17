@@ -21,7 +21,7 @@ public class CafeUserDetails implements UserDetails {
     }
 
     @Override
-    public Collection<? eHtends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
     }
 
