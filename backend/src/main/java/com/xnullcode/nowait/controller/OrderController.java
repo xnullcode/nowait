@@ -39,6 +39,7 @@ public class OrderController {
         User owner = userRepository.findById(userDetails.getId()).orElseThrow();
         Order order = new Order();
         order.setOwner(owner);
+        order.setCustomerName(request.getCustomerName());
         BigDecimal total = BigDecimal.ZERO;
 
         for (OrderItemRequest itemReq : request.getItems()) {
