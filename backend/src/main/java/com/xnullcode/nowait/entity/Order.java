@@ -26,7 +26,16 @@ public class Order {
     private BigDecimal totalPrice;
 
     @Column(nullable = false)
-    private String status; // PENDING, COMPLETED
+    private String status; // PENDING, PREPARING, FINISHED, COMPLETED
+
+    @Column(nullable = false)
+    private String customerName;
+
+    @Column
+    private String paymentMode; // CASH, ONLINE
+
+    @Column
+    private Boolean paymentVerified = false;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
@@ -34,6 +43,8 @@ public class Order {
     public Order() {
         this.timestamp = LocalDateTime.now();
         this.status = "PENDING";
+        this.paymentMode = "CASH";
+        this.paymentVerified = false;
     }
 
     public void addItem(OrderItem item) {
@@ -60,6 +71,15 @@ public class Order {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+
+    public String getPaymentMode() { return paymentMode; }
+    public void setPaymentMode(String paymentMode) { this.paymentMode = paymentMode; }
+
+    public Boolean getPaymentVerified() { return paymentVerified; }
+    public void setPaymentVerified(Boolean paymentVerified) { this.paymentVerified = paymentVerified; }
 
     public List<OrderItem> getItems() { return items; }
     public void setItems(List<OrderItem> items) { this.items = items; }

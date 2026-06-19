@@ -1,4 +1,4 @@
-package com.cafe.qrorder.dto;
+package com.xnullcode.nowait.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
