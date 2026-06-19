@@ -40,6 +40,9 @@ public class OrderController {
         Order order = new Order();
         order.setOwner(owner);
         order.setCustomerName(request.getCustomerName());
+        order.setPaymentMode(request.getPaymentMode() != null ? request.getPaymentMode().toUpperCase() : "CASH");
+        // Cash payments start unverified; online payments are pre-verified
+        order.setPaymentVerified("ONLINE".equalsIgnoreCase(order.getPaymentMode()));
         BigDecimal total = BigDecimal.ZERO;
 
         for (OrderItemRequest itemReq : request.getItems()) {
@@ -102,6 +105,23 @@ public class OrderController {
 
         Order order = orderOpt.get();
         order.setStatus(newStatus.toUpperCase());
+        orderRepository.save(order);
+
+        return ResponseEntity.ok(order);
+    }
+
+    @PatchMapping("/orders/{id}/verify-payment")
+    public ResponseEntity<?> verifyPayment(
+            @AuthenticationPrincipal CafeUserDetails userDetails,
+            @PathVariable Long id) {
+
+        Optional<Order> orderOpt = orderRepository.findById(id);
+        if (orderOpt.isEmpty() || !orderOpt.get().getOwner().getId().equals(userDetails.getId())) {
+            return ResponseEntity.status(403).body("Unauthorized or not found");
+        }
+
+        Order order = orderOpt.get();
+        order.setPaymentVerified(true);
         orderRepository.save(order);
 
         return ResponseEntity.ok(order);
