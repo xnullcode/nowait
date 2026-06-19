@@ -18,6 +18,12 @@ public class User {
     @Column(nullable = false)
     private String cafeName;
 
+    @Column
+    private String adminPasscode;
+
+    @Column
+    private String orderPasscode;
+
     public User() {}
 
     public User(String username, String password, String cafeName) {
@@ -37,4 +43,10 @@ public class User {
 
     public String getCafeName() { return cafeName; }
     public void setCafeName(String cafeName) { this.cafeName = cafeName; }
+
+    public String getAdminPasscode() { return adminPasscode; }
+    public void setAdminPasscode(String adminPasscode) { this.adminPasscode = adminPasscode; }
+
+    public String getOrderPasscode() { return orderPasscode; }
+    public void setOrderPasscode(String orderPasscode) { this.orderPasscode = orderPasscode; }
 }
