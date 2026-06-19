@@ -152,6 +152,8 @@ public class PaymentController {
             }
 
             order.setTotalPrice(total);
+            order.setPaymentMode("ONLINE");
+            order.setPaymentVerified(true);
             Order saved = orderRepository.save(order);
 
             return ResponseEntity.ok(Map.of(
