@@ -10,13 +10,14 @@ export default function WelcomePage() {
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex flex-col">
         {/* Header */}
         <div className="mb-16">
-          <h1 
-            className="text-4xl font-loubag font-black italic tracking-wider" 
-            style={{ 
-              color: '#f8fc52', 
-              WebkitTextStroke: '1.5px black'
-            }}
-          >
+	       <h1 
+	  className="text-4xl font-bold italic tracking-wider" 
+	  style={{ 
+	    fontFamily: 'Arial, sans-serif',
+	    color: '#f8fc52', 
+	    WebkitTextStroke: '1.5px black'
+	  }}
+	>
             {cafeName.toUpperCase()}
           </h1>
         </div>
