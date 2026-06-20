@@ -64,7 +64,11 @@ export default function DashboardPage() {
   const preparingOrders = orders.filter(o => o.status === 'PREPARING');
   const finishedOrders = orders.filter(o => o.status === 'FINISHED');
 
-  const OrderCard = ({ order, nextStatus, nextLabel, icon: Icon, colorClass, buttonClass }) => (
+  const OrderCard = ({ order, nextStatus, nextLabel, icon: Icon, colorClass, buttonClass, showPrice }) => {
+    const isUnpaidCash = (order.paymentMode || 'CASH') === 'CASH' && !order.paymentVerified;
+    const isPendingAndUnpaid = nextStatus === 'PREPARING' && isUnpaidCash;
+
+    return (
     <div className={`bg-white border border-black ${colorClass}`}>
       <div className="p-4 border-b border-black flex justify-between items-start">
         <div>
@@ -76,7 +80,7 @@ export default function DashboardPage() {
         </div>
         <div className="text-right">
           <span className="text-sm font-medium text-gray-600 block">{order.customerName}</span>
-          <span className="font-bold text-[#0054c6]">₹{order.totalPrice.toFixed(2)}</span>
+          {showPrice && <span className="font-bold text-[#0054c6]">₹{order.totalPrice.toFixed(2)}</span>}
         </div>
       </div>
       <div className="p-4">
@@ -121,15 +125,19 @@ export default function DashboardPage() {
         </div>
 
         <button 
-          onClick={() => updateOrderStatus(order.id, nextStatus)}
-          className={`w-full font-bold py-2.5 transition-colors flex items-center justify-center text-sm ${buttonClass}`}
+          onClick={() => {
+            if (!isPendingAndUnpaid) updateOrderStatus(order.id, nextStatus);
+          }}
+          disabled={isPendingAndUnpaid}
+          className={`w-full font-bold py-2.5 transition-colors flex items-center justify-center text-sm ${buttonClass} ${isPendingAndUnpaid ? 'opacity-50 cursor-not-allowed bg-gray-200' : ''}`}
         >
           <Icon className="w-4 h-4 mr-2" />
-          {nextLabel}
+          {isPendingAndUnpaid ? 'Awaiting Payment' : nextLabel}
         </button>
       </div>
     </div>
   );
+  };
 
   return (
     <div className="animate-in fade-in duration-500 max-w-[1600px] mx-auto">
@@ -158,6 +166,7 @@ export default function DashboardPage() {
                 icon={ChefHat}
                 colorClass="border-l-gray-400"
                 buttonClass="bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200"
+                showPrice={true}
               />
             ))}
           </div>
@@ -180,6 +189,7 @@ export default function DashboardPage() {
                 icon={Check}
                 colorClass="border-l-gray-400"
                 buttonClass="bg-[#0054c6] hover:bg-[#003d91] text-white"
+                showPrice={false}
               />
             ))}
           </div>
@@ -202,6 +212,7 @@ export default function DashboardPage() {
                 icon={CheckCircle2}
                 colorClass="border-l-gray-400"
                 buttonClass="bg-[#0f7986] hover:bg-[#0a5f6b] text-white"
+                showPrice={false}
               />
             ))}
           </div>
