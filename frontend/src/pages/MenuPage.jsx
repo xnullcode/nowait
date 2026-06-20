@@ -138,23 +138,25 @@ export default function MenuPage() {
         </div>
 
         {/* Category Graphic Buttons */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-16">
-          {categoryData.map(cat => (
-            <div key={cat.name} className="flex flex-col items-center">
-               <h3 className="text-xl md:text-2xl font-loubag mb-3 text-center">{cat.name}</h3>
-               <button 
-                  onClick={() => setSelectedCategory(selectedCategory === cat.filterName ? 'All' : cat.filterName)}
-                  className={`w-full aspect-[3/4] rounded-2xl overflow-hidden transition-transform duration-300 ${
-                    selectedCategory === cat.filterName 
-                      ? 'scale-95 shadow-inner ring-4 ring-black ring-inset' 
-                      : 'hover:-translate-y-2'
-                  }`}
-               >
-                  <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
-               </button>
-            </div>
-          ))}
-        </div>
+        {searchQuery.trim() === '' && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-16">
+            {categoryData.map(cat => (
+              <div key={cat.name} className="flex flex-col items-center">
+                 <h3 className="text-xl md:text-2xl font-loubag mb-3 text-center">{cat.name}</h3>
+                 <button 
+                    onClick={() => setSelectedCategory(selectedCategory === cat.filterName ? 'All' : cat.filterName)}
+                    className={`w-full aspect-[3/4] rounded-2xl overflow-hidden transition-transform duration-300 ${
+                      selectedCategory === cat.filterName 
+                        ? 'scale-95 shadow-inner ring-4 ring-black ring-inset' 
+                        : 'hover:-translate-y-2'
+                    }`}
+                 >
+                    <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                 </button>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Product Grid */}
         {filteredItems.length === 0 ? (
