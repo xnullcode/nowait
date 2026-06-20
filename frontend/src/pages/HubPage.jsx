@@ -88,9 +88,6 @@ export default function HubPage() {
       <main className="flex-grow px-6 sm:px-12 lg:px-20 py-16">
         {/* Hero text */}
         <div className="max-w-2xl mb-16">
-          <p className="text-xs font-mono font-semibold text-[#0f7986] uppercase tracking-widest mb-4">
-            {cafeName} — Control Hub
-          </p>
           <h1 className="text-4xl sm:text-5xl font-black text-gray-900 leading-tight tracking-tight">
             Where do you want<br />to go today?
           </h1>
