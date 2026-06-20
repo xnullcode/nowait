@@ -17,19 +17,26 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#E8F4F8] border-b border-gray-200">
-      <div className="container mx-auto px-6 h-14 flex items-center justify-between">
-        <Link to="/hub" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-          <span className="text-2xl font-black text-gray-900 tracking-tight">Nowait</span>
-          <span className="text-gray-300 text-sm">|</span>
-          <span className="text-sm font-medium text-slate-500">{cafeName}</span>
-        </Link>
+    <nav className="sticky top-0 z-50 bg-white border-b border-black">
+      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Link to="/hub" className="flex items-center hover:opacity-80 transition-opacity">
+            <div className="bg-[#f8fc52] text-black w-8 h-8 flex items-center justify-center font-black text-xl mr-3 border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              N
+            </div>
+            <span className="text-2xl font-black text-gray-900 tracking-tight uppercase">Nowait</span>
+          </Link>
+          <div className="h-6 w-px bg-gray-300"></div>
+          <span className="text-xl text-gray-800 tracking-wide" style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
+            {cafeName}
+          </span>
+        </div>
         
         <button 
           onClick={handleLogout} 
-          className="flex items-center px-3 py-1.5 border border-gray-200 rounded text-[13px] font-medium text-slate-600 hover:text-slate-900 hover:bg-white hover:border-gray-300 transition-all focus:outline-none" 
+          className="flex items-center px-5 py-2 border border-black text-xs font-mono font-bold uppercase tracking-wider text-black bg-white hover:bg-[#0f7986] hover:text-white transition-colors focus:outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]" 
         >
-          <LogOut className="w-3.5 h-3.5 mr-2" />
+          <LogOut className="w-4 h-4 mr-2" />
           Logout
         </button>
       </div>
