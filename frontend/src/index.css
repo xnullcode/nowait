@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-loubag: 'Loubag', serif;
+  
+  --color-cafe-50: #fdf8f6;
+  --color-cafe-100: #f2e8e5;
+  --color-cafe-200: #eaddd7;
+  --color-cafe-300: #e0cec7;
+  --color-cafe-400: #d2bab0;
+  --color-cafe-500: #a37c68;
+  --color-cafe-600: #7b5844;
+  --color-cafe-700: #593d2c;
+  --color-cafe-800: #3c2619;
+  --color-cafe-900: #25160d;
+
+  --color-primary-500: #d97706; /* Amber 600 */
+  --color-primary-600: #b45309; /* Amber 700 */
+}
+
+body {
+  background-color: var(--color-cafe-50);
+  color: var(--color-cafe-900);
+}
+@font-face {
+    font-family: "Loubag";
+    src: url("/assets/fonts/Loubag-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+}
