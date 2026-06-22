@@ -71,7 +71,7 @@ export default function MenuPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const backendUrl = 'http://localhost:8080';
+  const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   // Assets bundled in /public load directly; uploaded files come from backend
