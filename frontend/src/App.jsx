@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
@@ -23,6 +24,23 @@ const AppContent = () => {
   const location = useLocation();
   const hideNavbarRoutes = ['/', '/login', '/register', '/welcome', '/menu', '/cart', '/checkout'];
   const isKioskOrLanding = hideNavbarRoutes.includes(location.pathname);
+
+  useEffect(() => {
+    const cafeName = localStorage.getItem('cafe_name') || 'Nowait';
+    const paths = {
+      '/': 'Nowait',
+      '/login': 'Login | Nowait',
+      '/register': 'Register | Nowait',
+      '/welcome': `Welcome | ${cafeName}`,
+      '/hub': `Control Hub | ${cafeName}`,
+      '/menu': `Menu | ${cafeName}`,
+      '/cart': `Cart | ${cafeName}`,
+      '/checkout': `Checkout | ${cafeName}`,
+      '/staff': `Order Dashboard | ${cafeName}`,
+      '/admin': `Admin Panel | ${cafeName}`
+    };
+    document.title = paths[location.pathname] || `Nowait | ${cafeName}`;
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex flex-col font-sans transition-colors duration-300 bg-white">
