@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../api/axiosConfig';
 import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, Package, History, Settings as SettingsIcon, Clock, Banknote, CreditCard, ShieldCheck } from 'lucide-react';
 
-const BACKEND_URL = 'http://localhost:8080';
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 // Assets in /public load directly; uploads come from backend
 const getImageSrc = (path) => {
