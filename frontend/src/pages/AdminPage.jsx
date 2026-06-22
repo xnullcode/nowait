@@ -6,9 +6,10 @@ const BACKEND_URL = 'http://localhost:8080';
 
 // Assets in /public load directly; uploads come from backend
 const getImageSrc = (path) => {
-  if (!path) return null;
-  if (path.startsWith('/assets/')) return path;
-  return `${BACKEND_URL}${path}`;
+    if (!path) return null;
+    if (path.startsWith('/assets/')) return path;        // local static asset
+    if (path.startsWith('http')) return path;            // full Cloudinary URL ✅
+    return `${backendUrl}${path}`;                       // legacy local path fallback
 };
 
 const PREDEFINED_CATEGORIES = ['Bowls & salads', 'Wraps & sandwiches', 'Baked goods', 'Beverages'];
