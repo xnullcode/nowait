@@ -8,10 +8,10 @@
 		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.xnullcode</groupId>
-	<artifactId>nowait</artifactId>
+	<groupId>com.cafe</groupId>
+	<artifactId>qr-order</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>nowait</name>
+	<name>qr-order</name>
 	<description/>
 	<url/>
 	<licenses>
@@ -80,6 +80,13 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Razorpay Java SDK -->
+		<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.4.5</version>
 		</dependency>
 	</dependencies>
 
