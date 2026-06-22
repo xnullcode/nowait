@@ -11,6 +11,8 @@ const getImageSrc = (path) => {
   return `${BACKEND_URL}${path}`;
 };
 
+const PREDEFINED_CATEGORIES = ['Bowls & salads', 'Wraps & sandwiches', 'Baked goods', 'Beverages'];
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('products');
 
@@ -19,7 +21,8 @@ export default function AdminPage() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', price: '', category: '', description: '', stock: '0' });
+  const [formData, setFormData] = useState({ name: '', price: '', category: PREDEFINED_CATEGORIES[0], description: '', stock: '0' });
+  const [customCategoryMode, setCustomCategoryMode] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [savingProduct, setSavingProduct] = useState(false);
 
@@ -77,9 +80,11 @@ export default function AdminPage() {
         description: product.description || '',
         stock: product.stock,
       });
+      setCustomCategoryMode(!PREDEFINED_CATEGORIES.includes(product.category));
     } else {
       setEditingId(null);
-      setFormData({ name: '', price: '', category: '', description: '', stock: '0' });
+      setFormData({ name: '', price: '', category: PREDEFINED_CATEGORIES[0], description: '', stock: '0' });
+      setCustomCategoryMode(false);
     }
     setImageFile(null);
     setIsModalOpen(true);
@@ -438,19 +443,62 @@ export default function AdminPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Price (₹)</label>
-                    <input type="number" step="0.01" min="0" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })}
+                    <input type="number" step="0.01" min="0" required value={formData.price} 
+                      onKeyDown={e => { if (['e', 'E', '+', '-'].includes(e.key)) e.preventDefault(); }}
+                      onChange={e => setFormData({ ...formData, price: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-[#0f7986] outline-none text-sm" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Category</label>
-                    <input type="text" required value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-[#0f7986] outline-none text-sm" />
+                    {!customCategoryMode ? (
+                      <select 
+                        required 
+                        value={formData.category} 
+                        onChange={e => {
+                          if (e.target.value === 'Other') {
+                            setCustomCategoryMode(true);
+                            setFormData({ ...formData, category: '' });
+                          } else {
+                            setFormData({ ...formData, category: e.target.value });
+                          }
+                        }}
+                        className="w-full px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-[#0f7986] outline-none text-sm bg-white"
+                      >
+                        {PREDEFINED_CATEGORIES.map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                        <option value="Other">Other (Type manually...)</option>
+                      </select>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input 
+                          type="text" 
+                          required 
+                          placeholder="Type category..."
+                          value={formData.category} 
+                          onChange={e => setFormData({ ...formData, category: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-[#0f7986] outline-none text-sm" 
+                        />
+                        <button 
+                          type="button" 
+                          onClick={() => {
+                            setCustomCategoryMode(false);
+                            setFormData({ ...formData, category: PREDEFINED_CATEGORIES[0] });
+                          }}
+                          className="px-3 py-2 bg-gray-100 border border-gray-200 rounded text-sm font-medium text-gray-600 hover:bg-gray-200 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Stock</label>
-                    <input type="number" min="0" required value={formData.stock} onChange={e => setFormData({ ...formData, stock: e.target.value })}
+                    <input type="number" min="0" required value={formData.stock} 
+                      onKeyDown={e => { if (['e', 'E', '+', '-', '.'].includes(e.key)) e.preventDefault(); }}
+                      onChange={e => setFormData({ ...formData, stock: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-[#0f7986] outline-none text-sm" />
                   </div>
                 </div>
