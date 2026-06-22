@@ -40,13 +40,11 @@ public class FileStorageService {
     public void deleteFile(Long ownerId, String fileUrl) {
         if (fileUrl == null || fileUrl.isEmpty()) return;
         try {
-            // Extract the public_id from the Cloudinary URL
-            // URL format: https://res.cloudinary.com/<cloud>/image/upload/v123/nowait/<id>/products/<filename>
-            String publicId = fileUrl
-                    .substring(fileUrl.indexOf("/nowait/"))
-                    .replace("/", "", 0, 1) // remove leading slash
-                    .replaceAll("\\.[^.]+$", ""); // remove file extension
-            publicId = publicId.startsWith("/") ? publicId.substring(1) : publicId;
+            // Extract public_id from Cloudinary URL
+            // e.g. https://res.cloudinary.com/<cloud>/image/upload/v123/nowait/1/products/abc.jpg
+            // public_id = nowait/1/products/abc  (no extension)
+            String publicId = fileUrl.substring(fileUrl.indexOf("/nowait/") + 1);
+            publicId = publicId.replaceAll("\\.[^.]+$", ""); // strip file extension
             cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
         } catch (Exception e) {
             e.printStackTrace();
