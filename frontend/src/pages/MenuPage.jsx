@@ -77,9 +77,9 @@ export default function MenuPage() {
   // Assets bundled in /public load directly; uploaded files come from backend
 const getImageSrc = (path) => {
     if (!path) return null;
-    if (path.startsWith('/assets/')) return path;        // local static asset
-    if (path.startsWith('http')) return path;            // full Cloudinary URL ✅
-    return `${backendUrl}${path}`;                       // legacy local path fallback
+    if (path.startsWith('/assets/')) return path;        
+    if (path.startsWith('http')) return path;            
+    return `${backendUrl}${path}`;                       
 };
 
   return (
