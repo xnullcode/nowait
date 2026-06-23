@@ -51,7 +51,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex-grow flex items-center justify-center bg-[#0f7986] px-4 py-12 relative">
+     <div className="min-h-screen flex items-center justify-center bg-[#0f7986] px-4 py-16 relative">
       <Link to="/" className="absolute top-8 left-8 text-white/80 hover:text-white flex items-center transition-colors font-medium">
         <ArrowLeft className="w-5 h-5 mr-2" />
         Back to Home
