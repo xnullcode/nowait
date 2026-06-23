@@ -5,7 +5,7 @@ export default function WelcomePage() {
   const cafeName = localStorage.getItem('cafe_name') || 'Harvest';
 
   return (
-    <div className="min-h-screen bg-white font-sans flex flex-col">
+    <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: '#fcfcfc' }}>
       {/* Top Section */}
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex flex-col">
         {/* Header */}
@@ -14,7 +14,7 @@ export default function WelcomePage() {
 	  className="text-4xl font-bold italic tracking-wider" 
 	  style={{ 
 	    fontFamily: 'Arial, sans-serif',
-	    color: '#f8fc52', 
+	    color: '#f5f862', 
 	    WebkitTextStroke: '1.5px black'
 	  }}
 	>
@@ -31,7 +31,7 @@ export default function WelcomePage() {
             </h2>
             <button 
               onClick={() => navigate('/menu')}
-              className="px-8 py-3 rounded-full bg-white border-2 border-[#f8fc52] text-black font-medium hover:bg-[#f8fc52] hover:border-black transition-colors text-lg"
+              className="px-8 py-3 rounded-full bg-white border-2 border-[#f5f862] text-black font-medium hover:bg-[#f5f862] hover:border-black transition-colors text-lg"
             >
               Explore our menu
             </button>
@@ -42,7 +42,7 @@ export default function WelcomePage() {
             <img 
               src="/assets/cafe_items_sketch.png" 
               alt="Hand-drawn cafe items" 
-              className="max-w-full h-auto object-contain mix-blend-multiply"
+              className="max-w-full h-auto object-contain"
               style={{ maxHeight: '450px' }}
             />
           </div>
@@ -50,7 +50,7 @@ export default function WelcomePage() {
       </div>
 
       {/* Bottom Section */}
-      <div className="bg-[#f8fc52] border-t-8 border-black">
+      <div className="bg-[#f5f862] border-t-8 border-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             {/* Left: Text */}
