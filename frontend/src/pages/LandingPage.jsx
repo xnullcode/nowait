@@ -54,9 +54,9 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="flex items-center justify-between px-6 md:px-12 py-5 border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
         <div className="flex items-center space-x-12">
-          <div className="text-2xl font-black text-gray-900 tracking-tight flex items-center">
+          <Link to="/" className="text-2xl font-black text-gray-900 tracking-tight flex items-center">
             Nowait
-          </div>
+          </Link>
           <div className="hidden lg:flex space-x-8 text-base font-medium text-gray-600">
             {navLinks.map(link => (
               <a 
