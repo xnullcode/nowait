@@ -24,7 +24,7 @@ export default function Navbar() {
             <div className="bg-[#f8fc52] text-black w-8 h-8 flex items-center justify-center font-black text-xl mr-3 border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
               N
             </div>
-            <span className="text-2xl font-black text-gray-900 tracking-tight uppercase">Nowait</span>
+            <span className="hidden sm:inline text-2xl font-black text-gray-900 tracking-tight uppercase">Nowait</span>
           </Link>
           <div className="h-6 w-px bg-gray-300"></div>
           <span className="text-xl text-gray-800 tracking-wide" style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
@@ -34,10 +34,10 @@ export default function Navbar() {
         
         <button 
           onClick={handleLogout} 
-          className="flex items-center px-5 py-2 border border-black text-xs font-mono font-bold uppercase tracking-wider text-black bg-white hover:bg-[#0f7986] hover:text-white transition-colors focus:outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]" 
+          className="flex items-center px-3 sm:px-5 py-2 border border-black text-xs font-mono font-bold uppercase tracking-wider text-black bg-white hover:bg-[#0f7986] hover:text-white transition-colors focus:outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]" 
         >
-          <LogOut className="w-4 h-4 mr-2" />
-          Logout
+          <LogOut className="w-4 h-4 sm:mr-2" />
+          <span className="hidden sm:inline">Logout</span>
         </button>
       </div>
     </nav>
