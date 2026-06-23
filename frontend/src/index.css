@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+/* cache buster for vercel deployment */
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-loubag: 'Loubag', serif;
