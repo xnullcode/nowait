@@ -101,7 +101,7 @@ export default function HubPage() {
           {panels.map((panel, idx) => (
             <div
               key={panel.key}
-              className={`bg-white text-left p-10 flex flex-col justify-between h-[420px] ${idx !== 2 ? 'border-r border-gray-200' : ''}`}
+              className={`bg-white text-left p-10 flex flex-col min-h-[380px] ${idx !== 2 ? 'border-r border-gray-200' : ''}`}
             >
               <div>
                 <p className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-widest mb-8">
@@ -116,7 +116,7 @@ export default function HubPage() {
                 <h2 className="text-2xl font-black text-[#1a1f2e] mb-4 tracking-tight">{panel.title}</h2>
                 <p className="text-sm text-gray-500 leading-relaxed pr-4">{panel.desc}</p>
               </div>
-              <div className="mt-8">
+              <div className="mt-auto pt-8">
                 <button
                   onClick={panel.action}
                   className="inline-flex items-center justify-center border text-xs font-mono font-bold uppercase px-6 py-3 tracking-wider transition-colors bg-white focus:outline-none"
