@@ -222,13 +222,6 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
-          
-          <div className="mt-20 text-center">
-            <button className="bg-white border-2 border-[#0054c6] text-[#0054c6] font-bold py-2 px-6 rounded hover:bg-blue-50 transition-colors flex items-center mx-auto space-x-2">
-              <span>Show more</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
-            </button>
-          </div>
         </div>
       </section>
 
@@ -245,14 +238,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Floating Contact Button */}
+        {/* Floating Contact Button */}
       <div className="fixed bottom-8 right-8 z-50">
-        <button className="bg-[#0054c6] hover:bg-blue-800 text-white font-bold py-4 px-6 rounded shadow-2xl transition-transform hover:-translate-y-1 flex items-center">
+        <a 
+          href="https://www.linkedin.com/in/xnullcode/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="bg-[#0054c6] hover:bg-blue-800 text-white font-bold py-4 px-6 rounded shadow-2xl flex items-center"
+        >
           <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
           </svg>
-          Contact us
-        </button>
+          Contact
+        </a>
       </div>
     </div>
   );
