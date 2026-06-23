@@ -7,9 +7,9 @@ const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 // Assets in /public load directly; uploads come from backend
 const getImageSrc = (path) => {
     if (!path) return null;
-    if (path.startsWith('/assets/')) return path;        // local static asset
-    if (path.startsWith('http')) return path;            // full Cloudinary URL ✅
-    return `${backendUrl}${path}`;                       // legacy local path fallback
+    if (path.startsWith('/assets/')) return path;      
+    if (path.startsWith('http')) return path;          
+    return `${backendUrl}${path}`;  
 };
 
 const PREDEFINED_CATEGORIES = ['Bowls & salads', 'Wraps & sandwiches', 'Baked goods', 'Beverages'];
@@ -164,9 +164,6 @@ export default function AdminPage() {
       {/* Sidebar */}
       <div className="w-full md:w-56 flex-shrink-0">
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden sticky top-24">
-          <p className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-widest px-4 pt-4 pb-2">
-            Admin Menu
-          </p>
           <nav>
             {navItems.map(item => (
               <button
@@ -194,14 +191,13 @@ export default function AdminPage() {
           <div>
             <div className="flex justify-between items-center mb-6">
               <div>
-                <p className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-1">[PRODUCTS]</p>
                 <h1 className="text-2xl font-black text-gray-900">Product Management</h1>
               </div>
               <button
                 onClick={() => openModal()}
                 className="bg-[#0f7986] hover:bg-[#0d6b77] text-white font-bold py-2 px-4 rounded flex items-center transition-colors text-sm"
               >
-                <Plus className="w-4 h-4 mr-1" /> Add Product
+                <Plus className="w-4 h-4 mr-1" /> New
               </button>
             </div>
 
@@ -272,7 +268,6 @@ export default function AdminPage() {
         {activeTab === 'history' && (
           <div>
             <div className="mb-6">
-              <p className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-1">[ORDER HISTORY]</p>
               <h1 className="text-2xl font-black text-gray-900">All Orders</h1>
             </div>
             <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
@@ -342,7 +337,6 @@ export default function AdminPage() {
         {activeTab === 'settings' && (
           <div className="max-w-lg">
             <div className="mb-6">
-              <p className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-1">[SETTINGS]</p>
               <h1 className="text-2xl font-black text-gray-900">Account Settings</h1>
             </div>
 
@@ -354,7 +348,7 @@ export default function AdminPage() {
               )}
 
               <div className="px-6 py-5 space-y-4">
-                <p className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-widest">Account Details</p>
+                <p className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-widest">Enter New Details</p>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Cafe Name</label>
                   <input
@@ -428,7 +422,7 @@ export default function AdminPage() {
           <div className="bg-white w-full max-w-lg border border-gray-200 shadow-2xl rounded-xl overflow-hidden flex flex-col max-h-[90vh]">
             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
               <div>
-                <p className="text-xs font-mono text-gray-400 uppercase tracking-widest">{editingId ? '[EDIT]' : '[NEW]'}</p>
+
                 <h2 className="text-lg font-black text-gray-900">{editingId ? 'Edit Product' : 'Add Product'}</h2>
               </div>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-900 text-2xl leading-none">&times;</button>

@@ -104,9 +104,7 @@ export default function HubPage() {
               className={`bg-white text-left p-10 flex flex-col min-h-[380px] ${idx !== 2 ? 'border-r border-gray-200' : ''}`}
             >
               <div>
-                <p className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-widest mb-8">
-                  {panel.tag}
-                </p>
+
                 <div
                   className="w-16 h-16 flex items-center justify-center mb-6 rounded-md"
                   style={{ backgroundColor: panel.accent, color: panel.accentText }}
@@ -148,9 +146,7 @@ export default function HubPage() {
             {/* Modal header */}
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
               <div>
-                <p className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-1">
-                  {modal === 'admin' ? '[ADMIN PANEL]' : '[STAFF DASHBOARD]'}
-                </p>
+
                 <h2 className="text-xl font-black text-gray-900">Enter Passcode</h2>
               </div>
               <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-900 transition-colors">
