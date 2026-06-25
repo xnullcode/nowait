@@ -159,7 +159,7 @@ export default function CheckoutPage() {
         <div className="w-28 h-28 bg-[#f8fc52] border-4 border-black rounded-full flex items-center justify-center mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <CheckCircle2 className="w-14 h-14 text-black" strokeWidth={2.5} />
         </div>
-        <h1 className="text-4xl md:text-6xl font-loubag font-bold text-black mb-4 tracking-tight">Payment Done!</h1>
+        <h1 className="text-4xl md:text-6xl font-loubag font-bold text-black mb-4 tracking-tight">Order Received!</h1>
         <p className="text-black text-xl font-medium mb-2 max-w-md">
           Order ID: <span className="font-black bg-[#f8fc52] px-3 py-1 border-2 border-black rounded-lg ml-2">#{successOrder}</span>
         </p>
