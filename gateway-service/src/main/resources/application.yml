@@ -36,3 +36,8 @@ spring:
           predicates:
             - Path=/api/payment/**
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
