@@ -18,4 +18,21 @@ spring:
               - DELETE
               - OPTIONS
             allowedHeaders: "*"
-      
+      routes:
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/auth/**,/api/user/**
+        - id: menu-service
+          uri: ${MENU_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/menu/**,/api/categories/**,/uploads/**,/api/products/**
+        - id: order-service
+          uri: ${ORDER_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/orders/**,/ws/**,/api/checkout
+        - id: payment-service
+          uri: ${PAYMENT_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/api/payment/**
+
