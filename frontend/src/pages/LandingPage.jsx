@@ -52,11 +52,11 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-6 md:px-12 py-5 border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
+     <nav className="flex items-center justify-between px-6 md:px-12 py-5 border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
         <div className="flex items-center space-x-12">
-          <Link to="/" className="text-2xl font-black text-gray-900 tracking-tight flex items-center">
+          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-2xl font-black text-gray-900 tracking-tight flex items-center ">
             Nowait
-          </Link>
+          </a>
           <div className="hidden lg:flex space-x-8 text-base font-medium text-gray-600">
             {navLinks.map(link => (
               <a 
@@ -238,7 +238,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-        {/* Floating Contact Button */}
+        {/* Contact Button */}
       <div className="fixed bottom-8 right-8 z-50">
         <a 
           href="https://www.linkedin.com/in/xnullcode/" 
