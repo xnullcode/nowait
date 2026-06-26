@@ -75,12 +75,11 @@ export default function MenuPage() {
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   // Assets bundled in /public load directly; uploaded files come from backend
-const getImageSrc = (path) => {
+  const getImageSrc = (path) => {
     if (!path) return null;
-    if (path.startsWith('/assets/')) return path;        
-    if (path.startsWith('http')) return path;            
-    return `${backendUrl}${path}`;                       
-};
+    if (path.startsWith('/assets/')) return path; // served by Vite from /public
+    return `${backendUrl}${path}`;               // uploaded file on backend
+  };
 
   return (
     <div className="min-h-screen bg-white text-black font-sans pb-28 relative">
