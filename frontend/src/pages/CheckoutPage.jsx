@@ -45,7 +45,7 @@ export default function CheckoutPage() {
         paymentMode: 'CASH',
         items: cart.map(item => ({ menuItemId: item.id, quantity: item.quantity })),
       });
-      setSuccessOrder(response.data.orderId);
+      setSuccessOrder(response.data.orderNumber || response.data.orderId);
       clearCart();
     } catch (error) {
       console.error('Cash checkout failed', error);
@@ -55,6 +55,12 @@ export default function CheckoutPage() {
     }
   };
 
+  useEffect(() => {
+    if (cart.length === 0 && !successOrder) {
+      navigate('/cart');
+    }
+  }, [cart.length, successOrder, navigate]);
+  
   if (cart.length === 0 && !successOrder) {
     navigate('/cart');
     return null;
@@ -106,7 +112,7 @@ export default function CheckoutPage() {
             });
 
             setPaymentId(response.razorpay_payment_id);
-            setSuccessOrder(verifyRes.data.orderId);
+            setSuccessOrder(verifyRes.data.orderNumber || verifyRes.data.orderId);
             clearCart();
           } catch (err) {
             console.error('Verification failed', err);
