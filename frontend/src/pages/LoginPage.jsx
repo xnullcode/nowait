@@ -22,7 +22,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await api.post('/auth/login', { username, password });
+      const response = await api.post('/api/auth/login', { username, password });
       const { token, cafeName, adminPasscode, orderPasscode } = response.data;
       localStorage.setItem('cafe_token', token);
       localStorage.setItem('cafe_name', cafeName);
