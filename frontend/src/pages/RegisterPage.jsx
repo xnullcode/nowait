@@ -25,7 +25,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await api.post('/auth/register', {
+      const response = await api.post('/api/auth/register', {
         username, password, cafeName, adminPasscode, orderPasscode
       });
       const { token, cafeName: returnedCafeName, adminPasscode: ap, orderPasscode: op } = response.data;
