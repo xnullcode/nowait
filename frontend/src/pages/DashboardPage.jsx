@@ -72,7 +72,7 @@ export default function DashboardPage() {
     <div className={`bg-white border border-black ${colorClass}`}>
       <div className="p-4 border-b border-black flex justify-between items-start">
         <div>
-          <span className="font-bold text-lg text-gray-900 block">#{order.id}</span>
+          <span className="font-bold text-lg text-gray-900 block">#{order.orderNumber || order.id}</span>
           <span className="text-xs text-gray-500 flex items-center mt-1">
             <Clock className="w-3 h-3 mr-1" />
             {new Date(order.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
@@ -89,7 +89,7 @@ export default function DashboardPage() {
             <div key={idx} className="flex justify-between text-sm">
               <span className="text-gray-800 font-medium">
                 <span className="font-bold text-gray-500 mr-2">{item.quantity}x</span> 
-                {item.menuItem.name}
+                {item.productName || 'Unknown Item}
               </span>
             </div>
           ))}
