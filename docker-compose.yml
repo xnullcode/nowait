@@ -1,0 +1,125 @@
+
+
+name: nowait
+
+services:
+  postgres-auth:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: nowait_user
+      POSTGRES_PASSWORD: nowait_password
+      POSTGRES_DB: auth_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+
+  postgres-menu:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: nowait_user
+      POSTGRES_PASSWORD: nowait_password
+      POSTGRES_DB: menu_db
+    ports:
+      - "5437:5432"
+    volumes:
+      - menu_data:/var/lib/postgresql/data
+
+  postgres-order:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: nowait_user
+      POSTGRES_PASSWORD: nowait_password
+      POSTGRES_DB: order_db
+    ports:
+      - "5438:5432"
+    volumes:
+      - order_data:/var/lib/postgresql/data
+
+  postgres-payment:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: nowait_user
+      POSTGRES_PASSWORD: nowait_password
+      POSTGRES_DB: payment_db
+    ports:
+      - "5439:5432"
+    volumes:
+      - payment_data:/var/lib/postgresql/data
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres-auth:5432/auth_db
+      - DB_USER=nowait_user
+      - DB_PASSWORD=nowait_password
+      - menu.service.url=http://menu-service:8082
+    depends_on:
+      - postgres-auth
+
+  menu-service:
+    build: ./menu-service
+    ports:
+      - "8082:8082"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres-menu:5432/menu_db
+      - DB_USER=nowait_user
+      - DB_PASSWORD=nowait_password
+    depends_on:
+      - postgres-menu
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres-order:5432/order_db
+      - DB_USER=nowait_user
+      - DB_PASSWORD=nowait_password
+      - menu.service.url=http://menu-service:8082
+    depends_on:
+      - postgres-order
+      - menu-service
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8084:8084"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres-payment:5432/payment_db
+      - DB_USER=nowait_user
+      - DB_PASSWORD=nowait_password
+      - order.service.url=http://order-service:8083
+    depends_on:
+      - postgres-payment
+      - order-service
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - MENU_SERVICE_URL=http://menu-service:8082
+      - ORDER_SERVICE_URL=http://order-service:8083
+      - PAYMENT_SERVICE_URL=http://payment-service:8084
+    depends_on:
+      - auth-service
+      - menu-service
+      - order-service
+      - payment-service
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway-service
+
+volumes:
+  auth_data:
+  menu_data:
+  order_data:
+  payment_data:
