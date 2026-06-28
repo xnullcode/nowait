@@ -16,6 +16,18 @@ RUN echo "server { \
         index index.html index.htm; \
         try_files \$uri \$uri/ /index.html; \
     } \
+    location /api { \
+        proxy_pass http://gateway-service:8080; \
+    } \
+    location /uploads { \
+        proxy_pass http://gateway-service:8080; \
+    } \
+    location /ws { \
+        proxy_pass http://gateway-service:8080; \
+        proxy_http_version 1.1; \
+        proxy_set_header Upgrade \$http_upgrade; \
+        proxy_set_header Connection \"upgrade\"; \
+    } \
 }" > /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
