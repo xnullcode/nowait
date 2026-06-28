@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+// CONFIGURATION REQUIRED FOR ONLINE HOSTING:
+// Using a relative URL ('') because Nginx is configured to proxy /api requests to the backend.
+const BACKEND_URL = import.meta.env.VITE_API_URL || '';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+  baseURL: BACKEND_URL,
 });
 
 api.interceptors.request.use((config) => {
