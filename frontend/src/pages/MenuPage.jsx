@@ -71,7 +71,9 @@ export default function MenuPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+  // CONFIGURATION REQUIRED FOR ONLINE HOSTING:
+  // Using a relative URL ('') because Nginx is configured to proxy /api requests to the backend.
+  const backendUrl = import.meta.env.VITE_API_URL || '';
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   // Assets bundled in /public load directly; uploaded files come from backend
