@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+        - name: payment-service
+          image: nowait/payment-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8084
+          envFrom:
+            - configMapRef:
+                name: nowait-config
+            - secretRef:
+                name: nowait-secrets
+          env:
+            - name: DATABASE_URL
+              value: "jdbc:postgresql://postgres-cluster:5432/payment_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  type: ClusterIP
+  selector:
+    app: payment-service
+  ports:
+    - protocol: TCP
+      port: 8084
+      targetPort: 8084

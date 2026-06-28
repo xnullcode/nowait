@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - name: auth-service
+          image: nowait/auth-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: nowait-config
+            - secretRef:
+                name: nowait-secrets
+          env:
+            - name: DATABASE_URL
+              value: "jdbc:postgresql://postgres-cluster:5432/auth_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  type: ClusterIP
+  selector:
+    app: auth-service
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081

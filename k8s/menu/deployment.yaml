@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: menu-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: menu-service
+  template:
+    metadata:
+      labels:
+        app: menu-service
+    spec:
+      containers:
+        - name: menu-service
+          image: nowait/menu-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: nowait-config
+            - secretRef:
+                name: nowait-secrets
+          env:
+            - name: DATABASE_URL
+              value: "jdbc:postgresql://postgres-cluster:5432/menu_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: menu-service
+spec:
+  type: ClusterIP
+  selector:
+    app: menu-service
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082

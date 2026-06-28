@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-cluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-cluster
+  template:
+    metadata:
+      labels:
+        app: postgres-cluster
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: nowait-secrets
+              key: DB_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nowait-secrets
+              key: DB_PASS
+        - name: POSTGRES_DB
+          value: default_db # InitContainer will create the other DBs
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: init-scripts
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-data
+        emptyDir: {} # Use PersistentVolumeClaim in production
+      - name: init-scripts
+        configMap:
+          name: postgres-init-script
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-cluster
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app: postgres-cluster
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    CREATE DATABASE auth_db;
+    CREATE DATABASE menu_db;
+    CREATE DATABASE order_db;
+    CREATE DATABASE payment_db;
