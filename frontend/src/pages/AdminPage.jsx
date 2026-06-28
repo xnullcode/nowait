@@ -1,21 +1,34 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, Package, History, Settings as SettingsIcon, Clock, Banknote, CreditCard, ShieldCheck } from 'lucide-react';
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+// CONFIGURATION REQUIRED FOR ONLINE HOSTING:
+// Using a relative URL ('') because Nginx is configured to proxy /api requests to the backend.
+const BACKEND_URL = '';
 
 // Assets in /public load directly; uploads come from backend
 const getImageSrc = (path) => {
-    if (!path) return null;
-    if (path.startsWith('/assets/')) return path;      
-    if (path.startsWith('http')) return path;          
-    return `${backendUrl}${path}`;  
+  if (!path) return null;
+  if (path.startsWith('/assets/')) return path;
+  return `${BACKEND_URL}${path}`;
 };
 
 const PREDEFINED_CATEGORIES = ['Bowls & salads', 'Wraps & sandwiches', 'Baked goods', 'Beverages'];
 
 export default function AdminPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('products');
+
+  useEffect(() => {
+    if (!location.state?.authorized) {
+      navigate('/hub', { replace: true });
+    } else {
+      // Clear the state so a page refresh requires passcode again
+      window.history.replaceState({}, document.title);
+    }
+  }, [location, navigate]);
 
   // Products State
   const [products, setProducts] = useState([]);
@@ -333,7 +346,7 @@ export default function AdminPage() {
                       <tr><td colSpan="6" className="p-8 text-center text-gray-400 text-sm">No orders yet.</td></tr>
                     ) : historyOrders.map(order => (
                       <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                        <td className="p-4 font-bold text-gray-900 text-sm">#{order.id}</td>
+                        <td className="p-4 font-bold text-gray-900 text-sm">#{order.orderNumber || order.id}</td>
                         <td className="p-4 text-sm text-gray-500 whitespace-nowrap">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5 text-gray-300" />
@@ -342,7 +355,7 @@ export default function AdminPage() {
                         </td>
                         <td className="p-4 text-sm font-medium text-gray-800">{order.customerName || '—'}</td>
                         <td className="p-4 text-xs text-gray-400 max-w-[200px] truncate">
-                          {order.items.map(i => `${i.quantity}× ${i.menuItem.name}`).join(', ')}
+                          {order.items.map(i => `${i.quantity}× ${i.productName || 'Unknown Item'}`).join(', ')}
                         </td>
                         <td className="p-4 text-sm font-bold text-[#0f7986]">₹{Number(order.totalPrice).toFixed(2)}</td>
                         <td className="p-4">
@@ -391,6 +404,7 @@ export default function AdminPage() {
 
               <div className="px-6 py-5 space-y-4">
                 <p className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-widest">Enter New Details</p>
+
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Cafe Name</label>
                   <input
@@ -444,7 +458,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="px-6 py-5 bg-[#0f7986]/5 flex justify-between items-center border-t border-gray-100">
+              <div className="px-6 py-5 bg-gray-50 flex justify-between items-center">
                 <div>
                   <p className="text-sm font-bold text-gray-900">Missing default items?</p>
                   <p className="text-xs text-gray-500">Restore the classic Nowait Cafe menu items to your catalog.</p>
@@ -453,7 +467,7 @@ export default function AdminPage() {
                   type="button"
                   onClick={handleSeedMenu}
                   disabled={seeding}
-                  className="px-4 py-2 border border-gray-300 text-sm font-bold rounded hover:bg-gray-100 disabled:opacity-50 flex items-center transition-colors bg-white"
+                  className="px-4 py-2 border border-gray-300 text-sm font-bold rounded hover:bg-gray-100 disabled:opacity-50 flex items-center transition-colors"
                 >
                   {seeding ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Package className="w-4 h-4 mr-2" />}
                   Restore Defaults
@@ -502,7 +516,7 @@ export default function AdminPage() {
             </div>
             <div className="p-6 space-y-4">
               <p className="text-sm text-gray-700 font-medium">Please enter your current password to authorize these changes.</p>
-
+              
               <div>
                 <label className="block text-sm font-bold text-gray-900 mb-1.5">Current Password</label>
                 <input
@@ -550,7 +564,7 @@ export default function AdminPage() {
             </div>
             <div className="p-6 space-y-4">
               <p className="text-sm text-gray-700 font-medium">This action cannot be undone. Your credentials will be permanently deleted.</p>
-
+              
               <div>
                 <label className="block text-sm font-bold text-gray-900 mb-1.5">Enter your password</label>
                 <input
