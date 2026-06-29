@@ -33,6 +33,7 @@ export default function AdminPage() {
 
   // Settings State
   const [settingsData, setSettingsData] = useState({
+    currentPassword: '',
     username: '',
     password: '',
     cafeName: localStorage.getItem('cafe_name') || '',
@@ -42,6 +43,7 @@ export default function AdminPage() {
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState({ type: '', text: '' });
   const [seeding, setSeeding] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
@@ -147,8 +149,12 @@ export default function AdminPage() {
     }
   };
 
-  const handleSaveSettings = async (e) => {
+  const handleSaveSettings = (e) => {
     e.preventDefault();
+    setShowSaveModal(true);
+  };
+
+  const executeSaveSettings = async () => {
     setSavingSettings(true);
     setSettingsMessage({ type: '', text: '' });
 
@@ -163,8 +169,9 @@ export default function AdminPage() {
       if (adminPasscode !== undefined) localStorage.setItem('cafe_admin_passcode', adminPasscode);
       if (orderPasscode !== undefined) localStorage.setItem('cafe_order_passcode', orderPasscode);
 
-      setSettingsData(prev => ({ ...prev, password: '', username: '', adminPasscode: '', orderPasscode: '' }));
+      setSettingsData(prev => ({ ...prev, currentPassword: '', password: '', username: '', adminPasscode: '', orderPasscode: '' }));
       setSettingsMessage({ type: 'success', text: 'Settings updated successfully!' });
+      setShowSaveModal(false);
     } catch (err) {
       setSettingsMessage({ type: 'error', text: err.response?.data || 'Failed to update settings' });
     } finally {
@@ -481,6 +488,54 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {/* Save Settings Modal */}
+      {showSaveModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-sm border border-gray-200 shadow-2xl rounded-xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-[#0f7986]/5">
+              <h2 className="text-lg font-black text-[#0f7986] flex items-center">
+                <ShieldCheck className="w-5 h-5 mr-2" />
+                Verify Identity
+              </h2>
+              <button onClick={() => setShowSaveModal(false)} className="text-gray-400 hover:text-gray-900 text-2xl leading-none">&times;</button>
+            </div>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-gray-700 font-medium">Please enter your current password to authorize these changes.</p>
+              
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-1.5">Current Password</label>
+                <input
+                  type="password" value={settingsData.currentPassword}
+                  onChange={(e) => setSettingsData({ ...settingsData, currentPassword: e.target.value })}
+                  autoFocus
+                  onKeyDown={(e) => { if (e.key === 'Enter' && settingsData.currentPassword) executeSaveSettings(); }}
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-[#0f7986] focus:border-[#0f7986] outline-none text-sm transition-shadow"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={() => setShowSaveModal(false)}
+                className="px-4 py-2 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeSaveSettings}
+                disabled={savingSettings || !settingsData.currentPassword}
+                className="bg-[#0f7986] hover:bg-[#0d6b77] disabled:bg-gray-300 text-white font-bold py-2 px-6 rounded text-sm transition-colors flex items-center"
+              >
+                {savingSettings ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete Account Modal */}
       {showDeleteModal && (
