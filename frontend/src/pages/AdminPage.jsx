@@ -42,6 +42,10 @@ export default function AdminPage() {
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState({ type: '', text: '' });
   const [seeding, setSeeding] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
+  const [deletingAccount, setDeletingAccount] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -165,6 +169,22 @@ export default function AdminPage() {
       setSettingsMessage({ type: 'error', text: err.response?.data || 'Failed to update settings' });
     } finally {
       setSavingSettings(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmationText !== 'delete my account') {
+      alert("Please type 'delete my account' exactly as shown.");
+      return;
+    }
+    setDeletingAccount(true);
+    try {
+      await api.post('/api/user/account/delete', { password: deletePassword });
+      localStorage.clear();
+      window.location.href = '/login';
+    } catch (err) {
+      alert(err.response?.data || 'Failed to delete account. Check your password.');
+      setDeletingAccount(false);
     }
   };
 
@@ -433,6 +453,21 @@ export default function AdminPage() {
                 </button>
               </div>
 
+              <div className="px-6 py-5 bg-red-50 flex justify-between items-center border-t border-red-100 rounded-b-xl">
+                <div>
+                  <p className="text-sm font-bold text-red-900">Danger Zone</p>
+                  <p className="text-xs text-red-700">Permanently delete your account and revoke access.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteModal(true)}
+                  className="px-4 py-2 border border-red-300 text-sm font-bold text-red-700 rounded hover:bg-red-100 flex items-center transition-colors bg-white"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Account
+                </button>
+              </div>
+
               <div className="px-6 py-4 border-t border-gray-200">
                 <button
                   type="submit" disabled={savingSettings}
@@ -446,6 +481,64 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {/* Delete Account Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-md border border-gray-200 shadow-2xl rounded-xl overflow-hidden flex flex-col">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-red-50">
+              <h2 className="text-lg font-black text-red-900 flex items-center">
+                <Trash2 className="w-5 h-5 mr-2" />
+                Delete Account
+              </h2>
+              <button onClick={() => setShowDeleteModal(false)} className="text-red-400 hover:text-red-900 text-2xl leading-none">&times;</button>
+            </div>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-gray-700 font-medium">This action cannot be undone. Your credentials will be permanently deleted.</p>
+              
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-1.5">Enter your password</label>
+                <input
+                  type="password" value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none text-sm transition-shadow"
+                  placeholder="Password"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-1.5">
+                  To verify, type <span className="font-mono bg-gray-100 px-1 rounded text-red-600">delete my account</span>
+                </label>
+                <input
+                  type="text" value={deleteConfirmationText}
+                  onChange={(e) => setDeleteConfirmationText(e.target.value)}
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none text-sm transition-shadow"
+                  placeholder="Enter"
+                />
+              </div>
+            </div>
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                disabled={deletingAccount || deleteConfirmationText !== 'delete my account' || !deletePassword}
+                className="bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-bold py-2 px-6 rounded text-sm transition-colors flex items-center"
+              >
+                {deletingAccount ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                Confirm Deletion
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Product Modal */}
       {isModalOpen && (
