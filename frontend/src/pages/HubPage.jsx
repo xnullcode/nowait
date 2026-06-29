@@ -40,7 +40,7 @@ export default function HubPage() {
 
     if (passcodeInput === stored) {
       setModal(null);
-      navigate(modal === 'admin' ? '/admin' : '/staff');
+      navigate(modal === 'admin' ? '/admin' : '/staff', { state: { authorized: true } });
     } else {
       setPasscodeError('Incorrect passcode. Try again.');
       setPasscodeInput('');
