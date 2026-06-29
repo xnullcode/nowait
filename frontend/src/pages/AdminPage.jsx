@@ -41,6 +41,7 @@ export default function AdminPage() {
   });
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState({ type: '', text: '' });
+  const [seeding, setSeeding] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -128,6 +129,20 @@ export default function AdminPage() {
   };
 
   // Settings Method
+  const handleSeedMenu = async () => {
+    if (!window.confirm("This will add the default menu items to your catalog. Continue?")) return;
+    try {
+      setSeeding(true);
+      await api.post('/api/menu/seed');
+      setSettingsMessage({ text: 'Default menu items restored successfully!', type: 'success' });
+      fetchProducts(); // Refresh catalog in background
+    } catch (err) {
+      setSettingsMessage({ text: 'Failed to restore default menu.', type: 'error' });
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   const handleSaveSettings = async (e) => {
     e.preventDefault();
     setSavingSettings(true);
@@ -402,7 +417,23 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="px-6 py-4">
+              <div className="px-6 py-5 bg-gray-50 flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-gray-900">Missing default items?</p>
+                  <p className="text-xs text-gray-500">Restore the classic Nowait Cafe menu items to your catalog.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSeedMenu}
+                  disabled={seeding}
+                  className="px-4 py-2 border border-gray-300 text-sm font-bold rounded hover:bg-gray-100 disabled:opacity-50 flex items-center transition-colors"
+                >
+                  {seeding ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Package className="w-4 h-4 mr-2" />}
+                  Restore Defaults
+                </button>
+              </div>
+
+              <div className="px-6 py-4 border-t border-gray-200">
                 <button
                   type="submit" disabled={savingSettings}
                   className="w-full bg-[#0f7986] hover:bg-[#0d6b77] disabled:bg-gray-200 text-white disabled:text-gray-400 font-bold py-3 rounded text-sm transition-colors flex justify-center items-center"
