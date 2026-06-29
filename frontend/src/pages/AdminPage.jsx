@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, Package, History, Settings as SettingsIcon, Clock, Banknote, CreditCard, ShieldCheck } from 'lucide-react';
 
@@ -15,6 +16,8 @@ const getImageSrc = (path) => {
 const PREDEFINED_CATEGORIES = ['Bowls & salads', 'Wraps & sandwiches', 'Baked goods', 'Beverages'];
 
 export default function AdminPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('products');
 
   // Products State
@@ -73,6 +76,19 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem('cafe_token')) {
+      navigate('/login', { replace: true });
+      return;
+    }
+    if (!location.state?.authorized) {
+      navigate('/hub', { replace: true });
+      return;
+    } else {
+      window.history.replaceState({}, document.title);
+    }
+  }, [navigate, location]);
+
+  useEffect(() => {
     if (activeTab === 'products') fetchProducts();
     if (activeTab === 'history') fetchHistory();
   }, [activeTab]);
@@ -111,9 +127,9 @@ export default function AdminPage() {
 
     try {
       if (editingId) {
-        await api.put(`/api/products/${editingId}`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        await api.put(`/api/products/${editingId}`, data);
       } else {
-        await api.post('/api/products', data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        await api.post('/api/products', data);
       }
       setIsModalOpen(false);
       fetchProducts();

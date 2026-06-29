@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import { Clock, Check, ChefHat, CheckCircle2, Banknote, CreditCard, ShieldCheck } from 'lucide-react';
 
@@ -7,6 +7,7 @@ export default function DashboardPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchOrders = async () => {
     try {
@@ -42,15 +43,22 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!localStorage.getItem('cafe_token')) {
-      navigate('/login');
+      navigate('/login', { replace: true });
       return;
+    }
+    if (!location.state?.authorized) {
+      navigate('/hub', { replace: true });
+      return;
+    } else {
+      // Clear the state so a page refresh requires passcode again
+      window.history.replaceState({}, document.title);
     }
 
     fetchOrders();
     const interval = setInterval(fetchOrders, 5000); // Poll every 5s
 
     return () => clearInterval(interval);
-  }, [navigate]);
+  }, [navigate, location]);
 
   if (loading) {
     return (
