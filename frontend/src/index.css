@@ -34,9 +34,5 @@ body {
     @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
   }
     
-  @media (max-width: 639px) {
-    .hide-on-mobile {
-      display: none !important;
-    }
-  }
+ 
 }
